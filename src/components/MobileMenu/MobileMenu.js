@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import styled from 'styled-components/macro';
-import { DialogOverlay, DialogContent } from '@reach/dialog';
+import React from "react"
+import styled, { keyframes } from "styled-components/macro"
+import { DialogOverlay, DialogContent } from "@reach/dialog"
 
-import { QUERIES, WEIGHTS } from '../../constants';
+import { QUERIES, WEIGHTS } from "../../constants"
 
-import UnstyledButton from '../UnstyledButton';
-import Icon from '../Icon';
-import VisuallyHidden from '../VisuallyHidden';
+import UnstyledButton from "../UnstyledButton"
+import Icon from "../Icon"
+import VisuallyHidden from "../VisuallyHidden"
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
@@ -33,19 +33,49 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
         </Footer>
       </Content>
     </Overlay>
-  );
-};
+  )
+}
+
+const backdropAnimation = keyframes`
+  from {
+    background: none;
+  }
+  to {
+    background: var(--color-backdrop);
+  }
+    `
+
+const slideIn = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+    `
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+    `
 
 const Overlay = styled(DialogOverlay)`
+  --drawer-animation-duration: 400ms;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-backdrop);
   display: flex;
   justify-content: flex-end;
-`;
+
+  animation: ${backdropAnimation} var(--drawer-animation-duration);
+  animation-fill-mode: forwards;
+`
 
 const Content = styled(DialogContent)`
   background: white;
@@ -54,20 +84,30 @@ const Content = styled(DialogContent)`
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
-`;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${slideIn} var(--drawer-animation-duration);
+
+    & > *:not(:first-child) {
+      animation: ${fadeIn} 200ms;
+      animation-delay: var(--drawer-animation-duration);
+      animation-fill-mode: both;
+    }
+  }
+`
 
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
   top: 10px;
   right: 0;
   padding: 16px;
-`;
+`
 
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`;
+`
 
 const NavLink = styled.a`
   color: var(--color-gray-900);
@@ -79,23 +119,23 @@ const NavLink = styled.a`
   &:first-of-type {
     color: var(--color-secondary);
   }
-`;
+`
 
 const Filler = styled.div`
   flex: 1;
-`;
+`
 const Footer = styled.footer`
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 14px;
   justify-content: flex-end;
-`;
+`
 
 const SubLink = styled.a`
   color: var(--color-gray-700);
   font-size: 0.875rem;
   text-decoration: none;
-`;
+`
 
-export default MobileMenu;
+export default MobileMenu

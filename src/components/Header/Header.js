@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from "react"
+import styled from "styled-components/macro"
 
-import { QUERIES, WEIGHTS } from '../../constants';
-import Logo from '../Logo';
-import Icon from '../Icon';
-import UnstyledButton from '../UnstyledButton';
-import SuperHeader from '../SuperHeader';
-import MobileMenu from '../MobileMenu';
-import VisuallyHidden from '../VisuallyHidden';
+import { QUERIES, WEIGHTS } from "../../constants"
+import Logo from "../Logo"
+import Icon from "../Icon"
+import UnstyledButton from "../UnstyledButton"
+import SuperHeader from "../SuperHeader"
+import MobileMenu from "../MobileMenu"
+import VisuallyHidden from "../VisuallyHidden"
 
 const Header = () => {
-  const [showMobileMenu, setShowMobileMenu] = React.useState(false);
+  const [showMobileMenu, setShowMobileMenu] = React.useState(false)
 
   return (
     <header>
@@ -20,12 +20,30 @@ const Header = () => {
           <Logo />
         </LogoWrapper>
         <DesktopNav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLink href="/sale">
+            <NavText>Sale</NavText>
+            <BoldNavText>Sale</BoldNavText>
+          </NavLink>
+          <NavLink href="/new">
+            <NavText>New&nbsp;Releases</NavText>
+            <BoldNavText>New&nbsp;Releases</BoldNavText>
+          </NavLink>
+          <NavLink href="/men">
+            <NavText>Men</NavText>
+            <BoldNavText>Men</BoldNavText>
+          </NavLink>
+          <NavLink href="/women">
+            <NavText>Women</NavText>
+            <BoldNavText>Women</BoldNavText>
+          </NavLink>
+          <NavLink href="/kids">
+            <NavText>Kids</NavText>
+            <BoldNavText>Kids</BoldNavText>
+          </NavLink>
+          <NavLink href="/collections">
+            <NavText>Collections</NavText>
+            <BoldNavText>Collections</BoldNavText>
+          </NavLink>
         </DesktopNav>
         <MobileActions>
           <ShoppingBagButton>
@@ -49,8 +67,8 @@ const Header = () => {
         onDismiss={() => setShowMobileMenu(false)}
       />
     </header>
-  );
-};
+  )
+}
 
 const MainHeader = styled.div`
   display: flex;
@@ -69,7 +87,7 @@ const MainHeader = styled.div`
     padding-left: 16px;
     padding-right: 16px;
   }
-`;
+`
 
 const DesktopNav = styled.nav`
   display: flex;
@@ -79,7 +97,7 @@ const DesktopNav = styled.nav`
   @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
-`;
+`
 
 const MobileActions = styled.div`
   display: none;
@@ -92,7 +110,7 @@ const MobileActions = styled.div`
   @media ${QUERIES.phoneAndSmaller} {
     gap: 16px;
   }
-`;
+`
 
 const LogoWrapper = styled.div`
   flex: 1;
@@ -100,11 +118,11 @@ const LogoWrapper = styled.div`
   @media ${QUERIES.tabletAndSmaller} {
     flex: revert;
   }
-`;
+`
 
 const ShoppingBagButton = styled(UnstyledButton)`
   transform: translateX(-2px);
-`;
+`
 
 const Filler = styled.div`
   flex: 1;
@@ -112,18 +130,39 @@ const Filler = styled.div`
   @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
-`;
+`
 
 const NavLink = styled.a`
+  position: relative;
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--color-gray-900);
   font-weight: ${WEIGHTS.medium};
+  overflow: hidden;
 
   &:first-of-type {
     color: var(--color-secondary);
   }
-`;
+`
 
-export default Header;
+const NavText = styled.span`
+  display: block;
+  transform: translateY(0);
+  transition: transform 300ms;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    ${NavLink}:focus,
+    ${NavLink}:hover & {
+      transform: translateY(-100%);
+      transition: transform 300ms;
+    }
+  }
+`
+
+const BoldNavText = styled(NavText)`
+  position: absolute;
+  font-weight: ${WEIGHTS.bold};
+`
+
+export default Header

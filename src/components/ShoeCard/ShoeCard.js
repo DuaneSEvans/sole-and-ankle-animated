@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from "react"
+import styled from "styled-components/macro"
 
-import { WEIGHTS } from '../../constants';
-import { formatPrice, pluralize, isNewShoe } from '../../utils';
-import Spacer from '../Spacer';
+import { WEIGHTS } from "../../constants"
+import { formatPrice, pluralize, isNewShoe } from "../../utils"
+import Spacer from "../Spacer"
 
 const ShoeCard = ({
   slug,
@@ -36,83 +36,113 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
         </ImageWrapper>
+        <FlagWrapper>
+          {variant === "on-sale" && <SaleFlag>Sale</SaleFlag>}
+          {variant === "new-release" && <NewFlag>Just released!</NewFlag>}
+        </FlagWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
           <Price
             style={{
-              '--color':
-                variant === 'on-sale'
-                  ? 'var(--color-gray-700)'
-                  : undefined,
-              '--text-decoration':
-                variant === 'on-sale' ? 'line-through' : undefined,
+              "--color":
+                variant === "on-sale" ? "var(--color-gray-700)" : undefined,
+              "--text-decoration":
+                variant === "on-sale" ? "line-through" : undefined,
             }}
           >
             {formatPrice(price)}
           </Price>
         </Row>
         <Row>
-          <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
-          {variant === 'on-sale' ? (
+          <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
+          {variant === "on-sale" ? (
             <SalePrice>{formatPrice(salePrice)}</SalePrice>
           ) : undefined}
         </Row>
       </Wrapper>
     </Link>
-  );
-};
+  )
+}
 
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
-`;
+`
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+`
 
 const ImageWrapper = styled.div`
-  position: relative;
-`;
+  overflow: hidden;
+  border-radius: 16px 16px 4px 4px;
+`
+
+const FlagWrapper = styled.div`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  transform: translateY(0);
+  transition: transform 500ms;
+  will-change: transform;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    ${Link}:focus,
+    ${Link}:hover & {
+      transform: translate(-50%, -20%) rotate(10deg) scale(1.5);
+      transition: transform 200ms;
+    }
+  }
+`
 
 const Image = styled.img`
+  display: block;
   width: 100%;
   border-radius: 16px 16px 4px 4px;
-`;
+  transform: scale(1);
+  transition: transform 500ms, filter 500ms;
+  transform-origin: 50% 75%;
+  will-change: transform;
+  filter: contrast(100%);
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    ${Link}:focus,
+    ${Link}:hover & {
+      transform: scale(1.05);
+      transition: transform 200ms, filter 200ms;
+      filter: contrast(110%);
+    }
+  }
+`
 
 const Row = styled.div`
   font-size: 1rem;
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const Name = styled.h3`
   font-weight: ${WEIGHTS.medium};
   color: var(--color-gray-900);
-`;
+`
 
 const Price = styled.span`
   color: var(--color);
   text-decoration: var(--text-decoration);
-`;
+`
 
 const ColorInfo = styled.p`
   color: var(--color-gray-700);
-`;
+`
 
 const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: var(--color-primary);
-`;
+`
 
 const Flag = styled.div`
-  position: absolute;
-  top: 12px;
-  right: -4px;
   background: red;
   height: 32px;
   line-height: 32px;
@@ -121,13 +151,13 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
-`;
+`
 
 const SaleFlag = styled(Flag)`
   background-color: var(--color-primary);
-`;
+`
 const NewFlag = styled(Flag)`
   background-color: var(--color-secondary);
-`;
+`
 
-export default ShoeCard;
+export default ShoeCard
